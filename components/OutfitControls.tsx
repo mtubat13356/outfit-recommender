@@ -6,7 +6,7 @@ import OutfitCard from "@/components/OutfitCard";
 
 const OCCASIONS = ["casual", "school", "work", "formal", "sport"];
 
-export default function OutfitControls() {
+export default function OutfitControls({ wardrobeVersion }: { wardrobeVersion: number }) {
   const [occasion, setOccasion] = useState("casual");
   const [temperature, setTemperature] = useState(20);
 
@@ -69,7 +69,7 @@ export default function OutfitControls() {
     return () => {
       ignore = true;
     };
-  }, [occasion, temperature]);
+  }, [occasion, temperature, wardrobeVersion]); // refetch when the wardrobe changes too
 
   return (
     <section className="w-full max-w-md rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">

@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any --
+   The request body is untrusted, so we check it by hand at runtime.
+   TODO (Phase 3, step 3): replace `any` with `unknown` for stricter checks. */
 import { prisma } from "@/lib/prisma";
 
 // GET /api/clothing → every clothing item in the database, as JSON

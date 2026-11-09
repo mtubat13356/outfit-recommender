@@ -94,6 +94,11 @@ GitHub, AWS hosting, production database, README with screenshots.
   then forecast (`current=temperature_2m`), no API key, 5 s timeouts. Unknown city
   (no `results` key) → 404, upstream failure → 502. User wrote the JSON-digging lines.
   `OutfitControls` has a city form; result is clamped to -10..40 and sets the slider.
-- [ ] Phase 3, step 2: add/remove clothing from the UI (needs a DELETE endpoint)
-- [ ] Phase 3, step 3: error handling · step 4: tests
+- [x] Phase 3, step 2a: `app/api/clothing/[id]/route.ts` DELETE (`params` is a Promise;
+  deleteMany count 0 → 404, else 204). `components/Wardrobe.tsx` lists items with ✕.
+  `components/OutfitApp.tsx` (client parent) owns `wardrobeVersion`, passed to both
+  Wardrobe and OutfitControls (in its effect deps) so deletes refresh the outfit.
+  Run `npx eslint .` before committing. Reseed restores deleted sample items.
+- [ ] Phase 3, step 2b: "Add item" form using POST /api/clothing
+- [ ] Phase 3, step 3: error handling (incl. `any` → `unknown` in clothing route) · step 4: tests
 - Disk space: ~9 GB free after cleanup (Nov 2026); still watch big installs.
