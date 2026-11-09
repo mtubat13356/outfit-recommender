@@ -78,5 +78,9 @@ GitHub, AWS hosting, production database, README with screenshots.
   category, name. DB query makes it run per request (Cache Components on).
   Tested by calling GET() via tsx (`--env-file=.env --tsconfig tsconfig.json`,
   `.mts` for top-level await) to avoid dev-server cache while disk is low.
-- [ ] Phase 2, step 5: `POST /api/clothing` (create item, validate input)
-- Disk space on this Mac is very low (~0.5 GB free in Nov 2026); watch installs.
+- [x] Phase 2, step 5: `POST /api/clothing` in the same route.ts. User wrote
+  `validateClothingInput` (returns error string or null). Route: bad JSON / non-object
+  → 400, validation error → 400 `{ error }`, else `create` with whitelisted fields
+  (trimmed, color lowercased) → 201. Tested via tsx; reseed after tests.
+- [ ] Phase 2, step 6: recommendation endpoint (algorithm runs on the server)
+- Disk space: ~9 GB free after cleanup (Nov 2026); still watch big installs.
