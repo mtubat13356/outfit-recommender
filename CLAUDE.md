@@ -21,6 +21,9 @@ a weather API, AWS deployment.
   the user.** Let them write it first; give hints and feedback, and only
   reveal more of the answer when they ask.
 - Occasionally ask a quick question to check understanding.
+- **Commit and push to GitHub at the end of each completed step**
+  (remote `origin` = git@github.com:mtubat13356/outfit-recommender.git, branch
+  `main`, SSH auth). Briefly explain the git commands used. Never commit `.env`.
 
 ## Plan
 
