@@ -63,4 +63,7 @@ GitHub, AWS hosting, production database, README with screenshots.
 - [x] Phase 1, step 5: `components/OutfitCard.tsx` shows an `Outfit`; `OutfitControls`
   derives `outfit` from state (no extra useState). User wrote the null check.
   `Outfit` type exported from `lib/recommendOutfit.ts`. **Phase 1 complete.**
-- [ ] Phase 2: PostgreSQL + Prisma (not started)
+- [x] Phase 2, step 1: PostgreSQL 18 via Postgres.app (must be open/running).
+  Local DB `outfit_recommender`, user `medhatubati`, no password, port 5432.
+  CLI tools at /Applications/Postgres.app/Contents/Versions/latest/bin (not on PATH).
+- [ ] Phase 2, step 2: Prisma setup + `ClothingItem` model
