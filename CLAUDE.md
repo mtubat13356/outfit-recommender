@@ -82,5 +82,9 @@ GitHub, AWS hosting, production database, README with screenshots.
   `validateClothingInput` (returns error string or null). Route: bad JSON / non-object
   → 400, validation error → 400 `{ error }`, else `create` with whitelisted fields
   (trimmed, color lowercased) → 201. Tested via tsx; reseed after tests.
-- [ ] Phase 2, step 6: recommendation endpoint (algorithm runs on the server)
+- [x] Phase 2, step 6: `app/api/outfits/route.ts` GET `?occasion=&temperature=`
+  (NextRequest `nextUrl.searchParams`; text → Number, NaN/missing → 400). Loads all
+  items from DB, runs the user's `recommendOutfit` unchanged, returns outfit or null.
+  tsx tests outside the project must import next via full node_modules path.
+- [ ] Phase 2, step 7: connect frontend to the API (stop importing data/clothing.ts)
 - Disk space: ~9 GB free after cleanup (Nov 2026); still watch big installs.
