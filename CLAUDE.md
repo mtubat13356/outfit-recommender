@@ -74,5 +74,9 @@ GitHub, AWS hosting, production database, README with screenshots.
   must be run after schema changes (not automatic in Prisma 7). Shared client in
   `lib/prisma.ts` (PrismaPg adapter, globalThis singleton). Seed: `npx prisma db seed`
   runs `tsx prisma/seed.ts` (deleteMany + createMany from data/clothing.ts).
-- [ ] Phase 2, step 4: `GET /api/clothing` Route Handler
+- [x] Phase 2, step 4: `app/api/clothing/route.ts` GET → `findMany` ordered by
+  category, name. DB query makes it run per request (Cache Components on).
+  Tested by calling GET() via tsx (`--env-file=.env --tsconfig tsconfig.json`,
+  `.mts` for top-level await) to avoid dev-server cache while disk is low.
+- [ ] Phase 2, step 5: `POST /api/clothing` (create item, validate input)
 - Disk space on this Mac is very low (~0.5 GB free in Nov 2026); watch installs.
