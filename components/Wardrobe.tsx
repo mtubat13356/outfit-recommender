@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { ClothingItem } from "@/data/clothing";
+import AddItemForm from "@/components/AddItemForm";
 
 type Props = {
   wardrobeVersion: number; // goes up whenever the wardrobe changes
@@ -81,6 +82,8 @@ export default function Wardrobe({ wardrobeVersion, onChange }: Props) {
           </ul>
         </div>
       ))}
+
+      <AddItemForm onAdded={onChange} />
     </section>
   );
 }

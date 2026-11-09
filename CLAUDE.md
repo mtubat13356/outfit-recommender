@@ -99,6 +99,8 @@ GitHub, AWS hosting, production database, README with screenshots.
   `components/OutfitApp.tsx` (client parent) owns `wardrobeVersion`, passed to both
   Wardrobe and OutfitControls (in its effect deps) so deletes refresh the outfit.
   Run `npx eslint .` before committing. Reseed restores deleted sample items.
-- [ ] Phase 3, step 2b: "Add item" form using POST /api/clothing
+- [x] Phase 3, step 2b: `components/AddItemForm.tsx` (inside Wardrobe, `onAdded={onChange}`).
+  User wrote `toggleOccasion` (immutable add/remove). Number boxes kept as text,
+  empty → null so the server rejects it. Shows server 400 messages.
 - [ ] Phase 3, step 3: error handling (incl. `any` → `unknown` in clothing route) · step 4: tests
 - Disk space: ~9 GB free after cleanup (Nov 2026); still watch big installs.
