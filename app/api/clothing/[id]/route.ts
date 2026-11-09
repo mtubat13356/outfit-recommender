@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { serverError } from "@/lib/serverError";
 
 // DELETE /api/clothing/grey-hoodie → removes that one item
 // The folder name [id] means "any value here", given to us as params.id.
@@ -10,11 +11,15 @@ export async function DELETE(
 
   // deleteMany tells us how many rows it removed (0 or 1 here),
   // so we can reply 404 instead of crashing when the id doesn't exist.
-  const result = await prisma.clothingItem.deleteMany({ where: { id } });
-  if (result.count === 0) {
-    return Response.json({ error: "Item not found" }, { status: 404 });
-  }
+  try {
+    const result = await prisma.clothingItem.deleteMany({ where: { id } });
+    if (result.count === 0) {
+      return Response.json({ error: "Item not found" }, { status: 404 });
+    }
 
-  // 204 No Content: it worked, and there's nothing to send back
-  return new Response(null, { status: 204 });
+    // 204 No Content: it worked, and there's nothing to send back
+    return new Response(null, { status: 204 });
+  } catch (error) {
+    return serverError(`DELETE /api/clothing/${id}`, error);
+  }
 }

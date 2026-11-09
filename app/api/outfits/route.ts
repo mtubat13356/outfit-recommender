@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { recommendOutfit } from "@/lib/recommendOutfit";
+import { serverError } from "@/lib/serverError";
 
 // GET /api/outfits?occasion=casual&temperature=20 → the best outfit, or null
 export async function GET(request: NextRequest) {
@@ -18,8 +19,11 @@ export async function GET(request: NextRequest) {
     return Response.json({ error: "temperature must be a number" }, { status: 400 });
   }
 
-  const clothing = await prisma.clothingItem.findMany();
-  const outfit = recommendOutfit(clothing, occasion, temperature);
-
-  return Response.json(outfit);
+  try {
+    const clothing = await prisma.clothingItem.findMany();
+    const outfit = recommendOutfit(clothing, occasion, temperature);
+    return Response.json(outfit);
+  } catch (error) {
+    return serverError("GET /api/outfits", error);
+  }
 }

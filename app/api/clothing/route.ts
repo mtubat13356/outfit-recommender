@@ -1,13 +1,17 @@
 import { prisma } from "@/lib/prisma";
+import { serverError } from "@/lib/serverError";
 import type { ClothingItem } from "@/data/clothing";
 
 // GET /api/clothing → every clothing item in the database, as JSON
 export async function GET() {
-  const items = await prisma.clothingItem.findMany({
-    orderBy: [{ category: "asc" }, { name: "asc" }],
-  });
-
-  return Response.json(items);
+  try {
+    const items = await prisma.clothingItem.findMany({
+      orderBy: [{ category: "asc" }, { name: "asc" }],
+    });
+    return Response.json(items);
+  } catch (error) {
+    return serverError("GET /api/clothing", error);
+  }
 }
 
 // What a valid POST body looks like: a ClothingItem without the id
@@ -84,6 +88,10 @@ export async function POST(request: Request) {
   }
 
   // 3. Save. result.data is fully typed, with no `any` anywhere.
-  const item = await prisma.clothingItem.create({ data: result.data });
-  return Response.json(item, { status: 201 });
+  try {
+    const item = await prisma.clothingItem.create({ data: result.data });
+    return Response.json(item, { status: 201 });
+  } catch (error) {
+    return serverError("POST /api/clothing", error);
+  }
 }

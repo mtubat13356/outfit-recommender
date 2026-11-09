@@ -106,5 +106,8 @@ GitHub, AWS hosting, production database, README with screenshots.
   discriminated union `{ ok: false, error } | { ok: true, data: ClothingInput }`
   (`Omit<ClothingItem, "id">`). User fixed the category (=== checks) and temp
   (`typeof` + isInteger) lines. No `any` / eslint-disable left.
-- [ ] Phase 3, step 3b: server failures (DB down → JSON 500, not HTML) · step 4: tests
+- [x] Phase 3, step 3b: `lib/serverError.ts` (console.error full error, vague JSON 500).
+  Every Prisma call in routes is in try/catch. Tested by pointing DATABASE_URL at
+  port 5999 in a tsx script (no need to stop Postgres).
+- [ ] Phase 3, step 4: tests
 - Disk space: ~9 GB free after cleanup (Nov 2026); still watch big installs.
