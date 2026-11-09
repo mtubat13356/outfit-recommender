@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any --
-   The request body is untrusted, so we check it by hand at runtime.
-   TODO (Phase 3, step 3): replace `any` with `unknown` for stricter checks. */
 import { prisma } from "@/lib/prisma";
+import type { ClothingItem } from "@/data/clothing";
 
 // GET /api/clothing → every clothing item in the database, as JSON
 export async function GET() {
@@ -12,71 +10,80 @@ export async function GET() {
   return Response.json(items);
 }
 
-// Written by the user: returns an error message, or null if the body is valid.
-function validateClothingInput(body: any): string | null {
-  if (typeof body.name !== "string" || body.name.trim() === "") {
-    return "name is required";
+// What a valid POST body looks like: a ClothingItem without the id
+// (the database generates it).
+type ClothingInput = Omit<ClothingItem, "id">;
+
+// A discriminated union: check `ok` and TypeScript knows which shape you have.
+type ValidationResult =
+  | { ok: false; error: string }
+  | { ok: true; data: ClothingInput };
+
+// Written by the user. `unknown` means "could be anything": TypeScript
+// won't let us use a value until we've checked what it is.
+function validateClothingInput(body: unknown): ValidationResult {
+  const fail = (error: string): ValidationResult => ({ ok: false, error });
+
+  if (typeof body !== "object" || body === null || Array.isArray(body)) {
+    return fail("Body must be a JSON object");
+  }
+  const { name, category, color, occasions, minTemp, maxTemp } = body as Record<string, unknown>;
+
+  if (typeof name !== "string" || name.trim() === "") return fail("name is required");
+
+  if (category !== "top" && category !== "bottom" && category !== "shoes") {
+    return fail("category must be top, bottom, or shoes");
   }
 
-  if (!["top", "bottom", "shoes"].includes(body.category)) {
-    return "category must be top, bottom, or shoes";
+  if (typeof color !== "string" || color.trim() === "") return fail("color is required");
+
+  if (!Array.isArray(occasions)) return fail("occasions must be an array");
+
+  if (!occasions.every((o) => typeof o === "string")) return fail("every occasion must be a string");
+
+  if (
+    typeof minTemp !== "number" ||
+    typeof maxTemp !== "number" ||
+    !Number.isInteger(minTemp) ||
+    !Number.isInteger(maxTemp)
+  ) {
+    return fail("minTemp and maxTemp must be whole numbers");
   }
 
-  if (typeof body.color !== "string" || body.color.trim() === "") {
-    return "color is required";
-  }
+  if (minTemp > maxTemp) return fail("minTemp cannot be greater than maxTemp");
 
-  if (!Array.isArray(body.occasions)) {
-    return "occasions must be an array";
-  }
-
-  if (!body.occasions.every((o: any) => typeof o === "string")) {
-    return "every occasion must be a string";
-  }
-
-  if (!Number.isInteger(body.minTemp) || !Number.isInteger(body.maxTemp)) {
-    return "minTemp and maxTemp must be whole numbers";
-  }
-
-  if (body.minTemp > body.maxTemp) {
-    return "minTemp cannot be greater than maxTemp";
-  }
-
-  return null;
+  // Everything is checked, so TypeScript now knows each field's real type.
+  // Only these fields are kept; anything extra in the body is dropped.
+  return {
+    ok: true,
+    data: {
+      name: name.trim(),
+      category,
+      color: color.trim().toLowerCase(),
+      occasions,
+      minTemp,
+      maxTemp,
+    },
+  };
 }
 
 // POST /api/clothing → create one clothing item from a JSON body
 export async function POST(request: Request) {
   // 1. Read the body. Invalid JSON makes request.json() throw.
-  let body: any;
+  let body: unknown;
   try {
     body = await request.json();
   } catch {
     return Response.json({ error: "Body must be valid JSON" }, { status: 400 });
   }
 
-  // 2. The body must be an object (not null, a number, or an array)
-  if (typeof body !== "object" || body === null || Array.isArray(body)) {
-    return Response.json({ error: "Body must be a JSON object" }, { status: 400 });
+  // 2. Validate. `result.ok` tells TypeScript which shape we have.
+  const result = validateClothingInput(body);
+  if (!result.ok) {
+    return Response.json({ error: result.error }, { status: 400 });
   }
 
-  // 3. Validate every field
-  const error = validateClothingInput(body);
-  if (error !== null) {
-    return Response.json({ error }, { status: 400 });
-  }
-
-  // 4. Save only the fields we expect. The database generates the id.
-  const item = await prisma.clothingItem.create({
-    data: {
-      name: body.name.trim(),
-      category: body.category,
-      color: body.color.trim().toLowerCase(),
-      occasions: body.occasions,
-      minTemp: body.minTemp,
-      maxTemp: body.maxTemp,
-    },
-  });
-
+  // 3. Save. result.data is fully typed, with no `any` anywhere.
+  const item = await prisma.clothingItem.create({ data: result.data });
   return Response.json(item, { status: 201 });
 }

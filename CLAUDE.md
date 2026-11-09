@@ -102,5 +102,9 @@ GitHub, AWS hosting, production database, README with screenshots.
 - [x] Phase 3, step 2b: `components/AddItemForm.tsx` (inside Wardrobe, `onAdded={onChange}`).
   User wrote `toggleOccasion` (immutable add/remove). Number boxes kept as text,
   empty → null so the server rejects it. Shows server 400 messages.
-- [ ] Phase 3, step 3: error handling (incl. `any` → `unknown` in clothing route) · step 4: tests
+- [x] Phase 3, step 3a: clothing POST validation takes `unknown` and returns a
+  discriminated union `{ ok: false, error } | { ok: true, data: ClothingInput }`
+  (`Omit<ClothingItem, "id">`). User fixed the category (=== checks) and temp
+  (`typeof` + isInteger) lines. No `any` / eslint-disable left.
+- [ ] Phase 3, step 3b: server failures (DB down → JSON 500, not HTML) · step 4: tests
 - Disk space: ~9 GB free after cleanup (Nov 2026); still watch big installs.
