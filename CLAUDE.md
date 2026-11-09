@@ -70,5 +70,9 @@ GitHub, AWS hosting, production database, README with screenshots.
   Config is `prisma7.config.ts` (generated name), schema `prisma/schema.prisma`,
   client output `generated/prisma` (gitignored), `@prisma/adapter-pg` installed.
   User wrote `Category` enum + `ClothingItem` model. No migration run yet.
-- [ ] Phase 2, step 3: first migration (create the table) + seed sample data
+- [x] Phase 2, step 3: migration `init` applied (table + enum). `npx prisma generate`
+  must be run after schema changes (not automatic in Prisma 7). Shared client in
+  `lib/prisma.ts` (PrismaPg adapter, globalThis singleton). Seed: `npx prisma db seed`
+  runs `tsx prisma/seed.ts` (deleteMany + createMany from data/clothing.ts).
+- [ ] Phase 2, step 4: `GET /api/clothing` Route Handler
 - Disk space on this Mac is very low (~0.5 GB free in Nov 2026); watch installs.
