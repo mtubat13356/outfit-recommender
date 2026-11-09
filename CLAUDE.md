@@ -86,5 +86,9 @@ GitHub, AWS hosting, production database, README with screenshots.
   (NextRequest `nextUrl.searchParams`; text → Number, NaN/missing → 400). Loads all
   items from DB, runs the user's `recommendOutfit` unchanged, returns outfit or null.
   tsx tests outside the project must import next via full node_modules path.
-- [ ] Phase 2, step 7: connect frontend to the API (stop importing data/clothing.ts)
+- [x] Phase 2, step 7: `OutfitControls` fetches `/api/outfits` in `useEffect`
+  (deps occasion+temperature; `ignore` flag in cleanup prevents stale replies;
+  outfit/loading/error state). data/clothing.ts now only used by seed + type.
+  **Phase 2 complete.**
+- [ ] Phase 3: weather API, add/remove clothing UI, error handling, tests
 - Disk space: ~9 GB free after cleanup (Nov 2026); still watch big installs.
