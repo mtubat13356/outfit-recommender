@@ -10,6 +10,34 @@ export default function OutfitControls() {
   const [occasion, setOccasion] = useState("casual");
   const [temperature, setTemperature] = useState(20);
 
+  // Weather lookup: the city box, plus a status line shown under it
+  const [city, setCity] = useState("");
+  const [weatherStatus, setWeatherStatus] = useState<string | null>(null);
+  const [weatherLoading, setWeatherLoading] = useState(false);
+
+  async function handleWeatherSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault(); // stop the browser from reloading the page on submit
+    if (city.trim() === "") return;
+
+    setWeatherLoading(true);
+    setWeatherStatus(null);
+    try {
+      const res = await fetch(`/api/weather?${new URLSearchParams({ city })}`);
+      const data = await res.json();
+      if (!res.ok) {
+        setWeatherStatus(data.error ?? "Couldn't get the weather.");
+        return;
+      }
+      // Keep it inside the slider's range (-10..40)
+      setTemperature(Math.min(40, Math.max(-10, data.temperature)));
+      setWeatherStatus(`Now in ${data.city}, ${data.country}: ${data.temperature}°C`);
+    } catch {
+      setWeatherStatus("Couldn't reach the server.");
+    } finally {
+      setWeatherLoading(false);
+    }
+  }
+
   // The outfit now comes from the server, so it arrives later and lives in state
   const [outfit, setOutfit] = useState<Outfit | null>(null);
   const [loading, setLoading] = useState(true);
@@ -59,6 +87,29 @@ export default function OutfitControls() {
           ))}
         </select>
       </label>
+
+      <form onSubmit={handleWeatherSubmit} className="mt-6">
+        <span className="text-sm font-medium">City</span>
+        <div className="mt-1 flex gap-2">
+          <input
+            type="text"
+            value={city}
+            onChange={(event) => setCity(event.target.value)}
+            placeholder="e.g. London"
+            className="block w-full rounded-md border border-zinc-300 bg-transparent px-3 py-2 dark:border-zinc-700"
+          />
+          <button
+            type="submit"
+            disabled={weatherLoading || city.trim() === ""}
+            className="shrink-0 rounded-md bg-zinc-900 px-3 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900"
+          >
+            {weatherLoading ? "Checking…" : "Use current weather"}
+          </button>
+        </div>
+        {weatherStatus !== null && (
+          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{weatherStatus}</p>
+        )}
+      </form>
 
       <label className="mt-6 block">
         <span className="text-sm font-medium">Temperature: {temperature}°C</span>

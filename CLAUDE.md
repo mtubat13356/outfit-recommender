@@ -90,5 +90,10 @@ GitHub, AWS hosting, production database, README with screenshots.
   (deps occasion+temperature; `ignore` flag in cleanup prevents stale replies;
   outfit/loading/error state). data/clothing.ts now only used by seed + type.
   **Phase 2 complete.**
-- [ ] Phase 3: weather API, add/remove clothing UI, error handling, tests
+- [x] Phase 3, step 1: `app/api/weather/route.ts` GET `?city=` → Open-Meteo geocoding
+  then forecast (`current=temperature_2m`), no API key, 5 s timeouts. Unknown city
+  (no `results` key) → 404, upstream failure → 502. User wrote the JSON-digging lines.
+  `OutfitControls` has a city form; result is clamped to -10..40 and sets the slider.
+- [ ] Phase 3, step 2: add/remove clothing from the UI (needs a DELETE endpoint)
+- [ ] Phase 3, step 3: error handling · step 4: tests
 - Disk space: ~9 GB free after cleanup (Nov 2026); still watch big installs.
