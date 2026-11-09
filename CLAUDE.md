@@ -66,4 +66,9 @@ GitHub, AWS hosting, production database, README with screenshots.
 - [x] Phase 2, step 1: PostgreSQL 18 via Postgres.app (must be open/running).
   Local DB `outfit_recommender`, user `medhatubati`, no password, port 5432.
   CLI tools at /Applications/Postgres.app/Contents/Versions/latest/bin (not on PATH).
-- [ ] Phase 2, step 2: Prisma setup + `ClothingItem` model
+- [x] Phase 2, step 2: Prisma 7.10.1 (pinned; npm "latest" is an 8.0 RC, avoid).
+  Config is `prisma7.config.ts` (generated name), schema `prisma/schema.prisma`,
+  client output `generated/prisma` (gitignored), `@prisma/adapter-pg` installed.
+  User wrote `Category` enum + `ClothingItem` model. No migration run yet.
+- [ ] Phase 2, step 3: first migration (create the table) + seed sample data
+- Disk space on this Mac is very low (~0.5 GB free in Nov 2026); watch installs.
