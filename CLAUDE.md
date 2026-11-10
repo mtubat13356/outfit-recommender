@@ -46,6 +46,13 @@ Weather API, add/remove clothing, error handling, tests.
 ### Phase 4 – Ship it
 GitHub, AWS hosting, production database, README with screenshots.
 
+### Phase 5 – Virtual closet ("Clueless"-style try-on), after deploy
+Paper-doll version (NOT AI try-on): customizable SVG figure beside the outfit;
+user uploads flat-lay photos of clothes; background removed in the browser
+(free library, no per-image cost); images stored in AWS S3, `imageUrl` field added
+to `ClothingItem` (new migration); recommended outfit layered onto the figure.
+Teaches: file uploads + validation, S3, migrations, SVG, CSS positioning.
+
 ## Progress
 - [x] Phase 1, step 1: Next.js + Tailwind scaffolded (Next 16, React 19, Tailwind v4).
   `npm run build` passes. Node 26 is installed via nvm (default alias). An old
