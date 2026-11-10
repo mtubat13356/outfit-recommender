@@ -117,7 +117,12 @@ GitHub, AWS hosting, production database, README with screenshots.
 - [x] Phase 4, step 1: README (features, stack, how it works, API table, setup,
   structure) + `.env.example` (`!.env.example` added to .gitignore). The user skipped
   the "What I learned" section for now: still an empty placeholder, to be written by them.
-- [ ] Phase 4, step 2: production database (hosted Postgres on AWS)
+- [ ] Phase 4, step 2: production database. **Decided (Nov 2026): AWS RDS PostgreSQL
+  (db.t4g.micro) + Amplify Hosting.** New-account Free plan = up to $200 credits for up
+  to 6 months, then normal billing (~$15+/mo) until deleted. User must set a budget
+  alert. Amplify docs list Next ≤15 officially; Next 16 reported working, so test.
+  Known Amplify gotcha: SSR env vars exist at build but not runtime unless written
+  to .env.production in the build step.
 - [ ] Phase 4, step 3: deploy to AWS · step 4: screenshots in README
 - Disk space: ~10 GB free (Nov 2026). Free space can vanish to macOS swap when RAM
   is full (hit 11 GB swap); a restart fixes it. Check `sysctl vm.swapusage` if `df` drops.
