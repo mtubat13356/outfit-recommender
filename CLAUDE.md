@@ -114,6 +114,10 @@ GitHub, AWS hosting, production database, README with screenshots.
   Needed `@types/node` 26 (Vitest 5 rejects @types/node 20). `lib/recommendOutfit.test.ts`:
   `item()` helper with defaults + 4 tests (fits, temperature filter, no shoes → null,
   Rule 2 brown shoes win). User asked to be shown the last two. **Phase 3 complete.**
-- [ ] Phase 4: README, AWS hosting, production database
+- [x] Phase 4, step 1: README (features, stack, how it works, API table, setup,
+  structure) + `.env.example` (`!.env.example` added to .gitignore). The user skipped
+  the "What I learned" section for now: still an empty placeholder, to be written by them.
+- [ ] Phase 4, step 2: production database (hosted Postgres on AWS)
+- [ ] Phase 4, step 3: deploy to AWS · step 4: screenshots in README
 - Disk space: ~10 GB free (Nov 2026). Free space can vanish to macOS swap when RAM
   is full (hit 11 GB swap); a restart fixes it. Check `sysctl vm.swapusage` if `df` drops.
