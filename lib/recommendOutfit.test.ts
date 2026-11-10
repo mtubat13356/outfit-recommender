@@ -51,5 +51,27 @@ describe("recommendOutfit", () => {
     expect(outfit?.top.name).toBe("Tee"); // the coat is too warm for 25°C
   });
 
-  // ✏️ Your tests go here
+  it("returns null when there are no shoes", () => {
+    const wardrobe = [
+      item({ name: "Tee", category: "top" }),
+      item({ name: "Jeans", category: "bottom", color: "blue" }),
+    ];
+
+    const outfit = recommendOutfit(wardrobe, "casual", 20);
+
+    expect(outfit).toBeNull();
+  });
+
+  it("prefers black or brown shoes", () => {
+    const wardrobe = [
+      item({ name: "Tee", category: "top" }), // white (default)
+      item({ name: "Jeans", category: "bottom", color: "blue" }),
+      item({ name: "Sneakers", category: "shoes" }), // white (default)
+      item({ name: "Boots", category: "shoes", color: "brown" }),
+    ];
+
+    const outfit = recommendOutfit(wardrobe, "casual", 20);
+
+    expect(outfit?.shoe.name).toBe("Boots");
+  });
 });

@@ -109,5 +109,11 @@ GitHub, AWS hosting, production database, README with screenshots.
 - [x] Phase 3, step 3b: `lib/serverError.ts` (console.error full error, vague JSON 500).
   Every Prisma call in routes is in try/catch. Tested by pointing DATABASE_URL at
   port 5999 in a tsx script (no need to stop Postgres).
-- [ ] Phase 3, step 4: tests
-- Disk space: ~9 GB free after cleanup (Nov 2026); still watch big installs.
+- [x] Phase 3, step 4: Vitest 5.1.0 (`npm test` = `vitest run`, `npm run test:watch`).
+  `vitest.config.mts` uses native `resolve.tsconfigPaths` (no plugin), env `node`.
+  Needed `@types/node` 26 (Vitest 5 rejects @types/node 20). `lib/recommendOutfit.test.ts`:
+  `item()` helper with defaults + 4 tests (fits, temperature filter, no shoes → null,
+  Rule 2 brown shoes win). User asked to be shown the last two. **Phase 3 complete.**
+- [ ] Phase 4: README, AWS hosting, production database
+- Disk space: ~10 GB free (Nov 2026). Free space can vanish to macOS swap when RAM
+  is full (hit 11 GB swap); a restart fixes it. Check `sysctl vm.swapusage` if `df` drops.
