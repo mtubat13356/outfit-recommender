@@ -46,12 +46,37 @@ Weather API, add/remove clothing, error handling, tests.
 ### Phase 4 – Ship it
 GitHub, AWS hosting, production database, README with screenshots.
 
-### Phase 5 – Virtual closet ("Clueless"-style try-on), after deploy
-Paper-doll version (NOT AI try-on): customizable SVG figure beside the outfit;
-user uploads flat-lay photos of clothes; background removed in the browser
-(free library, no per-image cost); images stored in AWS S3, `imageUrl` field added
-to `ClothingItem` (new migration); recommended outfit layered onto the figure.
-Teaches: file uploads + validation, S3, migrations, SVG, CSS positioning.
+### Phase 5 – "Paper doll" closet built from the user's real body (after deploy)
+Not started; plan only. Goal: a Clueless-style closet screen where recommended
+outfits are layered onto a figure made from the user's own full-body photo, not a
+generic drawn figure.
+
+1. **Body photo:** one full-body photo against a plain white wall. Background
+   removed in the browser (e.g. `@imgly/background-removal`), leaving the outline.
+2. **Figure style** (user chooses): (a) real cutout photo, (b) flat one-color
+   silhouette made from the cutout, or (c) traced SVG outline (e.g. Potrace).
+3. **Body landmarks:** in-browser pose detection (e.g. MediaPipe Pose) finds
+   shoulders, hips, ankles; save those points.
+4. **Clothing photos:** flat-lay photo of each top, bottom, and pair of shoes;
+   backgrounds removed the same way.
+5. **Layering:** scale and position each clothing cutout from the landmarks:
+   tops shoulders→waist, bottoms hips→ankles, shoes at the feet.
+
+Constraints:
+- **Free only:** no paid APIs, no per-image costs. (Open question for later: where
+  clothing photos are stored. S3 costs a little after the AWS credits end, so
+  decide between S3 and on-device storage when we get there.)
+- **Privacy:** the body photo stays on the user's device. Never upload it to the
+  database or commit it to GitHub; add its storage folder to `.gitignore`.
+- **Known limit:** clothes scale to the user's proportions but don't drape like
+  fabric. That's intended: a precise paper doll, not a realistic try-on.
+- **Before installing anything, check the current versions + docs** of these
+  libraries (they may have changed).
+- Keep teaching as in earlier phases: explain key ideas, let the user write parts.
+
+Photo tips to remind the user of at that point: stand straight facing the
+camera, arms slightly away from sides, fitted clothes that contrast with the
+wall, whole body in frame, camera at about waist height, even lighting.
 
 ## Progress
 - [x] Phase 1, step 1: Next.js + Tailwind scaffolded (Next 16, React 19, Tailwind v4).
